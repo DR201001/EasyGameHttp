@@ -1,6 +1,5 @@
-import { StringFormatException, UrlFormatException } from "../../exception/Exception";
 import HttpRequest from "../request/HttpRequest";
-import IHttpAdapter from "./IHttpAdapter";
+import IHttpAdapter from "../interface/IHttpAdapter";
 
 export default abstract class HttpAdapter implements IHttpAdapter {
     private _isConnected: boolean = false;
@@ -15,7 +14,6 @@ export default abstract class HttpAdapter implements IHttpAdapter {
         
         this._request = request;
         this._setRequestHeaders(request?.getRequestHeaders());
-        // this.setTimeoutAndCallback(request?.getTimeout(), request?.getTimeoutCallback());
     }
 
     private _setRequestHeaders(headers: Map<string, string>): void {
@@ -26,15 +24,10 @@ export default abstract class HttpAdapter implements IHttpAdapter {
         }
     }
 
-    protected getRequestType(): string {
-        return this._request?.getRequestType() || "GET";
-    }
-
     public connect(): void {
-        const url = this._request?.getUrl();
+        const url = this.getRequest()?.getUrl();
 
         try {
-            this._checkUrl(url);
             this.connectServer(url);
             this._isConnected = true;
         } catch (error) {
@@ -43,19 +36,37 @@ export default abstract class HttpAdapter implements IHttpAdapter {
         }
     }
 
-    private _checkUrl(url: string): void {
-        if (!url)
-            throw new StringFormatException(`HttpAdapter url is invaild, url is ${url}.`);
-
-        const reg=/^([hH][tT]{2}[pP]:\/\/|[hH][tT]{2}[pP][sS]:\/\/)(([A-Za-z0-9-~]+)\.)+([A-Za-z0-9-~\/])+$/;
-        if (!reg.test(url))
-            throw new UrlFormatException(`HttpAdapter url is invaild, url is ${url}.`);
+    public async send(): Promise<any> {
+        return new Promise((resolve: (value: unknown) => any, reject: (reason?: any) => any) => {
+            this.sendRequest(resolve, reject);
+        });
     }
 
-    public send(body: any): void {
-        this.sendRequest(body);
+    /**
+     * 获取请求
+     * @returns HttpRequest
+     */
+     protected getRequest(): HttpRequest {
+        return this._request;
     }
-    
+
+    /**
+     * 获取请求数据
+     * @returns any
+     */
+    protected getRequestData(): any {
+        return this.getRequest()?.getRequestData();
+    }
+
+    /**
+     * 获取请求类型
+     * @returns 
+     */
+    protected getRequestType(): string {
+        return this.getRequest()?.getRequestType() || "GET";
+    }
+
+    public abstract abort(): void;
 
     /**
      * 通过url连接服务器
@@ -71,15 +82,9 @@ export default abstract class HttpAdapter implements IHttpAdapter {
     protected abstract setRequestHeader(name: string, value: string): void;
 
     /**
-     * 设置超时时间和回调
-     * @param timeout 
-     * @param callback 
+     * 发送请求、
+     * @param resolve 
+     * @param reject 
      */
-    protected abstract setTimeoutAndCallback(timeout: number, callback?: Function): void;
-
-    /**
-     * 发送请求
-     * @param body 
-     */
-    protected abstract sendRequest(body: any): void;
+    protected abstract sendRequest(resolve: (value: unknown) => any, reject: (reason?: any) => any): void;
 }

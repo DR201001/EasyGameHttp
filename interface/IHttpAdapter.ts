@@ -18,7 +18,11 @@ export default interface IHttpAdapter {
 
     /**
      * 发送请求
-     * @param body 
      */
-    send(body: any): void;
+    send(): Promise<any>;
+
+    /**
+     * 中止请求
+     */
+    abort(): void;
 }

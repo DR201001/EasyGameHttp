@@ -1,4 +1,4 @@
-import INetInterceptor from "../base/INetInterceptor";
+import INetInterceptor from "../interface/INetInterceptor";
 
 export default class NetInterceptor implements INetInterceptor {
     onRequest(resolve: (value: unknown) => void, reject: (reason?: any) => void): void {

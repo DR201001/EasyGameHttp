@@ -1,4 +1,4 @@
-import { FormatException, NumberFormatException, OverflowException, StringFormatException, UrlFormatException } from "../../exception/Exception";
+import { NumberFormatException, OverflowException, StringFormatException, UrlFormatException } from "../exception/Exception";
 import { RequestStringType, RequestType } from "../config/HttpRequest";
 
 export default class HttpRequest {
@@ -6,7 +6,7 @@ export default class HttpRequest {
 
     // private _timeoutCall: Function = undefined;
 
-    private _timeout: number = undefined;
+    // private _timeout: number = undefined;
 
     private _url: string = undefined;
 
@@ -17,7 +17,7 @@ export default class HttpRequest {
 
     constructor() {
         this._headers = new Map();
-        this._timeout = 3000;
+        // this._timeout = 3000;
         this._reqType = RequestType.GET;
     }
 
@@ -80,27 +80,27 @@ export default class HttpRequest {
         return RequestStringType.coverTo(this._reqType);
     }
      
-    /**
-     * 设定超时时长
-     * @param time 超时时长
-     */
-    public setTimeout(time: number): void {
-        if (time == null || time == undefined || typeof(time) !== "number")
-            throw new NumberFormatException(`HttpRequest setTimeout time is ${time}, type is ${typeof(time)}.`);
+    // /**
+    //  * 设定超时时长
+    //  * @param time 超时时长
+    //  */
+    // public setTimeout(time: number): void {
+    //     if (time == null || time == undefined || typeof(time) !== "number")
+    //         throw new NumberFormatException(`HttpRequest setTimeout time is ${time}, type is ${typeof(time)}.`);
 
-        if (time <= 0)
-            throw new OverflowException(`HttpRequest setTimeout time is ${time}.`);
+    //     if (time <= 0)
+    //         throw new OverflowException(`HttpRequest setTimeout time is ${time}.`);
 
-        this._timeout = time;
-    }
+    //     this._timeout = time;
+    // }
 
-    /**
-     * 获取超时时长
-     * @returns number
-     */
-    public getTimeout(): number {
-        return this._timeout;
-    }
+    // /**
+    //  * 获取超时时长
+    //  * @returns number
+    //  */
+    // public getTimeout(): number {
+    //     return this._timeout;
+    // }
 
     /**
      * 设置http请求数据
