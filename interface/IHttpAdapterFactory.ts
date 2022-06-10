@@ -7,5 +7,5 @@ export default interface IHttpAdapterFactory {
     /**
      * 创建http适配器
      */
-    createHttpAdapter(): IHttpAdapter;
+     build(): IHttpAdapter;
 }

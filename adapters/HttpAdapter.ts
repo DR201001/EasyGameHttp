@@ -1,10 +1,13 @@
 import HttpRequest from "../request/HttpRequest";
 import IHttpAdapter from "../interface/IHttpAdapter";
+import IHttpAdapterObserver from "../interface/IHttpAdapterObserver";
 
 export default abstract class HttpAdapter implements IHttpAdapter {
     private _isConnected: boolean = false;
 
     private _request: HttpRequest = undefined;
+
+    private _observer: IHttpAdapterObserver = undefined;
 
     public setRequest(request: HttpRequest): void {
         if (this._isConnected) {
@@ -37,9 +40,21 @@ export default abstract class HttpAdapter implements IHttpAdapter {
     }
 
     public async send(): Promise<any> {
-        return new Promise((resolve: (value: unknown) => any, reject: (reason?: any) => any) => {
+        return new Promise((resolve: (unknown: any) => any, reject: (reason?: any) => any) => {
             this.sendRequest(resolve, reject);
         });
+    }
+
+    /**
+     * 设置adapter观察者
+     * @param observer 
+     */
+    public setAdapterObserver(observer: IHttpAdapterObserver): void {
+        this._observer = observer;
+    }
+
+    protected getAdapterObserver(): IHttpAdapterObserver {
+        return this._observer;
     }
 
     /**
@@ -67,6 +82,10 @@ export default abstract class HttpAdapter implements IHttpAdapter {
     }
 
     public abstract abort(): void;
+
+    public abstract getErrorContent(): any;
+
+    public abstract getResponseContent(): any;
 
     /**
      * 通过url连接服务器

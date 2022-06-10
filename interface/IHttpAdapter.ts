@@ -1,4 +1,3 @@
-import { RequestType } from "../config/HttpRequest";
 import HttpRequest from "../request/HttpRequest";
 
 /**
@@ -7,7 +6,7 @@ import HttpRequest from "../request/HttpRequest";
 export default interface IHttpAdapter {
     /**
      * 设置请求
-     * @param request 
+     * @param request http请求
      */
     setRequest(request: HttpRequest): void;
 
@@ -25,4 +24,14 @@ export default interface IHttpAdapter {
      * 中止请求
      */
     abort(): void;
+
+    /**
+     * 获取异常内容
+     */
+    getErrorContent(): any;
+
+    /**
+     * 获取响应内容
+     */
+    getResponseContent(): any;
 }
