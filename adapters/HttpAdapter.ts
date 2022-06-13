@@ -11,7 +11,7 @@ export default abstract class HttpAdapter implements IHttpAdapter {
 
     public setRequest(request: HttpRequest): void {
         if (this._isConnected) {
-            console.warn("setRequest failed, http was already connected.");
+            console.warn("Adapter setRequest failed, http was already connected.");
             return;
         }
         

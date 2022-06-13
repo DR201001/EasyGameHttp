@@ -13,9 +13,9 @@ export default class HttpAdapterObserver implements IHttpAdapterObserver {
 
     public registerTimeoutListener(timeout: number, listener: IHttpAdapterListener): void {
         if (!timeout || typeof(timeout) !== "number")
-            throw new NumberFormatException(`registerTimeoutListener timeout is ${timeout}.`);
+            throw new NumberFormatException(`HttpAdapterObserver registerTimeoutListener timeout is ${timeout}.`);
         if (timeout <= 0)
-            throw new OverflowException(`registerTimeoutListener timeout is ${timeout}.`);
+            throw new OverflowException(`HttpAdapterObserver registerTimeoutListener timeout is ${timeout}.`);
             
         this._timeout = timeout;
         this._timeoutListener = listener;
