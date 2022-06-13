@@ -1,20 +1,20 @@
 import HttpRequest from "../request/HttpRequest";
 import IHttpAdapter from "../interface/IHttpAdapter";
-import IHttpAdapterObserver from "../interface/IHttpAdapterObserver";
+import IHttpAdapterListener from "../interface/IHttpAdapterListener";
 
 export default abstract class HttpAdapter implements IHttpAdapter {
     private _isConnected: boolean = false;
 
     private _request: HttpRequest = undefined;
 
-    private _observer: IHttpAdapterObserver = undefined;
+    private _listener: IHttpAdapterListener = undefined;
 
     public setRequest(request: HttpRequest): void {
         if (this._isConnected) {
             console.warn("Adapter setRequest failed, http was already connected.");
             return;
         }
-        
+
         this._request = request;
         this._setRequestHeaders(request?.getRequestHeaders());
     }
@@ -46,15 +46,15 @@ export default abstract class HttpAdapter implements IHttpAdapter {
     }
 
     /**
-     * 设置adapter观察者
-     * @param observer 
+     * 绑定 adapter 监听对象
+     * @param listener 
      */
-    public setAdapterObserver(observer: IHttpAdapterObserver): void {
-        this._observer = observer;
+    public bindAdapterListener(listener: IHttpAdapterListener): void {
+        this._listener = listener;
     }
 
-    protected getAdapterObserver(): IHttpAdapterObserver {
-        return this._observer;
+    protected getAdapterListener(): IHttpAdapterListener {
+        return this._listener;
     }
 
     /**

@@ -8,9 +8,8 @@ export default interface INetInterceptor {
     /**
      * 请求拦截接口
      * @param request 
-     * @param reject 
      */
-    onRequest(request: HttpRequest, reject: (reason?: any) => void): void;
+    onRequest(request: HttpRequest): void;
 
     /**
      * 响应拦截器

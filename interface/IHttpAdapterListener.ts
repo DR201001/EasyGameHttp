@@ -5,10 +5,24 @@ import IHttpAdapter from "./IHttpAdapter";
  */
 export default interface IHttpAdapterListener {
     /**
-     * 监听器执行函数
+     * 超时
+     * @param adapter 
+     * @param reject 
+     */
+    onTimeout(adapter: IHttpAdapter, reject: (reason?: any) => any): void;
+
+    /**
+     * 异常
+     * @param adapter 
+     * @param reject 
+     */
+    onError(adapter: IHttpAdapter, reject: (reason?: any) => any): void;
+
+    /**
+     * 响应
      * @param adapter 
      * @param resolve 
      * @param reject 
      */
-    onExecute(adapter: IHttpAdapter, resolve: (unknown: any) => any, reject: (reason?: any) => any): void;
+    onResponse(adapter: IHttpAdapter, resolve: (unknown: any) => any, reject: (reason?: any) => any): void;
 }

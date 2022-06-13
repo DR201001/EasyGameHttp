@@ -4,9 +4,7 @@ import { RequestStringType, RequestType } from "../config/HttpRequest";
 export default class HttpRequest {
     private _headers: Map<string, string> = undefined;
 
-    // private _timeoutCall: Function = undefined;
-
-    // private _timeout: number = undefined;
+    private _timeout: number = undefined;
 
     private _url: string = undefined;
 
@@ -80,27 +78,27 @@ export default class HttpRequest {
         return RequestStringType.coverTo(this._reqType);
     }
      
-    // /**
-    //  * 设定超时时长
-    //  * @param time 超时时长
-    //  */
-    // public setTimeout(time: number): void {
-    //     if (time == null || time == undefined || typeof(time) !== "number")
-    //         throw new NumberFormatException(`HttpRequest setTimeout time is ${time}, type is ${typeof(time)}.`);
+    /**
+     * 设定超时时长
+     * @param time 超时时长
+     */
+    public setTimeout(time: number): void {
+        if (time == null || time == undefined || typeof(time) !== "number")
+            throw new NumberFormatException(`HttpRequest setTimeout time is ${time}, type is ${typeof(time)}.`);
 
-    //     if (time <= 0)
-    //         throw new OverflowException(`HttpRequest setTimeout time is ${time}.`);
+        if (time <= 0)
+            throw new OverflowException(`HttpRequest setTimeout time is ${time}.`);
 
-    //     this._timeout = time;
-    // }
+        this._timeout = time;
+    }
 
-    // /**
-    //  * 获取超时时长
-    //  * @returns number
-    //  */
-    // public getTimeout(): number {
-    //     return this._timeout;
-    // }
+    /**
+     * 获取超时时长
+     * @returns number
+     */
+    public getTimeout(): number {
+        return this._timeout;
+    }
 
     /**
      * 设置http请求数据
@@ -117,23 +115,4 @@ export default class HttpRequest {
     public getRequestData(): any {
         return this._body;
     }
- 
-    // /**
-    //  * 设置超时回调函数
-    //  * @param callback
-    //  */
-    // public setTimeoutCallback(callback: Function): void {
-    //     if (callback === null || callback === undefined || typeof(callback) === "function")
-    //         this._timeoutCall = callback;
-    //     else
-    //         throw new FormatException(`HttpRequest setTimeoutCallback callback is ${callback}, type is ${typeof(callback)}.`);
-    // }
-
-    // /**
-    //  * 获取超时回调函数
-    //  * @returns Function
-    //  */
-    // public getTimeoutCallback(): Function {
-    //     return this._timeoutCall;
-    // }
 }

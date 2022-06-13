@@ -6,11 +6,11 @@ import BaseNetInterceptor from "./NetInterceptor";
  * log拦截器
  */
 export default class LogInterceptor extends BaseNetInterceptor {
-    public onRequest(request: HttpRequest, reject: (reason?: any) => void): void {
+    public onRequest(request: HttpRequest): void {
         console.debug(`Http request url is: ${request.getUrl()}.`);
         console.debug(`Http request body is: ${request.getRequestData()}.`);
 
-        this.nextRequest(request, reject);
+        this.nextRequest(request);
     }
 
     public onResponse(adapter: IHttpAdapter, reject: (reason?: any) => void): void {

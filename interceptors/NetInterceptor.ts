@@ -20,9 +20,9 @@ export default abstract class NetInterceptor implements INetInterceptor {
         return !!this._next;
     }
 
-    protected nextRequest(request: HttpRequest, reject: (reason?: any) => void): void {
+    protected nextRequest(request: HttpRequest): void {
         if (this._hasNext()) {
-            this.getNext().onRequest(request, reject);
+            this.getNext().onRequest(request);
         }
         else {
             console.log("INetInterceptor onRequest finished.");
@@ -48,7 +48,7 @@ export default abstract class NetInterceptor implements INetInterceptor {
         }
     }
 
-    public abstract onRequest(request: HttpRequest, reject: (reason?: any) => void): void;
+    public abstract onRequest(request: HttpRequest): void;
 
     public abstract onResponse(adapter: IHttpAdapter, reject: (reason?: any) => void): void;
 

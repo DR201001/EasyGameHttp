@@ -29,8 +29,8 @@ export default class InterceptorQueue<T extends NetInterceptor> implements INetI
         return this._array.length;
     }
 
-    public onRequest(request: HttpRequest, reject: (reason?: any) => void): void {
-        this.front()?.onRequest(request, reject);
+    public onRequest(request: HttpRequest): void {
+        this.front()?.onRequest(request);
     }
 
     public onResponse(adapter: IHttpAdapter, reject: (reason?: any) => void): void {

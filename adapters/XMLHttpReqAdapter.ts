@@ -26,26 +26,24 @@ export default class XMLHttpReqAdapter extends HttpAdapter {
     }
 
     protected sendRequest(resolve: (value: unknown) => any, reject: (reason?: any) => any): void {
-        this._setTimeoutListener(resolve, reject);
-        this._setErrorListener(resolve, reject);
+        this._setTimeoutListener(reject);
+        this._setErrorListener(reject);
 
         this._http?.send(this.getRequestData());
         this._http.onload = this._http.onreadystatechange = this._onreadystatechange.bind(this, resolve, reject);
     }
 
-    private _setTimeoutListener(resolve: (value: unknown) => any, reject: (reason?: any) => any): void {
-        this._http.timeout = this.getAdapterObserver()?.getTimeout() || 3000;
+    private _setTimeoutListener(reject: (reason?: any) => any): void {
+        this._http.timeout = this.getRequest().getTimeout() || 3000;
         this._http.ontimeout = () => {
-            !!this.getAdapterObserver()?.getTimeoutListener() 
-                && (this.getAdapterObserver()?.getTimeoutListener().onExecute(this, resolve, reject));
+            this.getAdapterListener()?.onTimeout(this, reject);
         };
     }
 
-    private _setErrorListener(resolve: (value: unknown) => any, reject: (reason?: any) => any): void {
+    private _setErrorListener(reject: (reason?: any) => any): void {
         this._http.onerror = (error) => {
             this._errorContent = error;
-            !!this.getAdapterObserver()?.getErrorListener() 
-                && (this.getAdapterObserver()?.getErrorListener().onExecute(this, resolve, reject));
+            this.getAdapterListener()?.onError(this, reject);
         }
     }
 
@@ -63,11 +61,10 @@ export default class XMLHttpReqAdapter extends HttpAdapter {
             return;
         }
 
-        this._setResponseListener(resolve, reject);
+        this._responseListener(resolve, reject);
     }
 
-    private _setResponseListener(resolve: (value: unknown) => any, reject: (reason?: any) => any): void {
-        !!this.getAdapterObserver()?.getResponseListener() 
-            && (this.getAdapterObserver()?.getResponseListener().onExecute(this, resolve, reject));
+    private _responseListener(resolve: (value: unknown) => any, reject: (reason?: any) => any): void {
+        this.getAdapterListener()?.onResponse(this, resolve, reject);
     }
 }
