@@ -15,7 +15,7 @@ export default class HttpRequest {
 
     constructor() {
         this._headers = new Map();
-        // this._timeout = 3000;
+        this._timeout = 3000;
         this._reqType = RequestType.GET;
     }
 
