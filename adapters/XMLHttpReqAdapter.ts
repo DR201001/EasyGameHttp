@@ -45,12 +45,12 @@ export default class XMLHttpReqAdapter extends HttpAdapter {
         this._http?.open(this.getRequestType(), url, true);
     }
 
-    private _onreadystatechange(resolve: (value: unknown) => any, reject: (reason?: any) => any, xhr: XMLHttpRequest, ev: Event): void {
-        console.debug(`XMLHttpReqAdapter current status is ${xhr.status}.`);
-        if (xhr.status !== 4) {
+    private _onreadystatechange(resolve: (value: unknown) => any, reject: (reason?: any) => any): void {
+        console.debug(`XMLHttpReqAdapter current readyState is ${this._http.readyState}.`);
+        if (this._http.readyState !== 4) {
             return;
         }
-        
+
         this.setResponseContent(this._http.responseText);
         this._responseListener(resolve, reject);
     }

@@ -20,7 +20,6 @@ export default abstract class HttpAdapter implements IHttpAdapter {
         }
 
         this._request = request;
-        this._setRequestHeaders(request?.getRequestHeaders());
     }
 
     private _setRequestHeaders(headers: Map<string, string>): void {
@@ -36,6 +35,7 @@ export default abstract class HttpAdapter implements IHttpAdapter {
 
         try {
             this.connectServer(url);
+            this._setRequestHeaders(this._request?.getRequestHeaders());
             this._isConnected = true;
         } catch (error) {
             this._isConnected = false;
