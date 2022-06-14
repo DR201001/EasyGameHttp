@@ -26,9 +26,21 @@ export default interface IHttpAdapter {
     abort(): void;
 
     /**
+     * 设置错误内容
+     * @param content 
+     */
+    setErrorContent(content: any): void;
+
+    /**
      * 获取异常内容
      */
     getErrorContent(): any;
+
+    /**
+     * 设置响应内容
+     * @param content 
+     */
+    setResponseContent(content: any): void;
 
     /**
      * 获取响应内容

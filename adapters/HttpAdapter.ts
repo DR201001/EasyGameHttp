@@ -9,6 +9,10 @@ export default abstract class HttpAdapter implements IHttpAdapter {
 
     private _listener: IHttpAdapterListener = undefined;
 
+    private _errContent: any = undefined;
+
+    private _respContent: any = undefined;
+
     public setRequest(request: HttpRequest): void {
         if (this._isConnected) {
             console.warn("Adapter setRequest failed, http was already connected.");
@@ -43,6 +47,22 @@ export default abstract class HttpAdapter implements IHttpAdapter {
         return new Promise((resolve: (unknown: any) => any, reject: (reason?: any) => any) => {
             this.sendRequest(resolve, reject);
         });
+    }
+
+    public setErrorContent(content: any): void {
+        this._errContent = content;
+    }
+
+    public setResponseContent(content: any): void {
+        this._respContent = content;
+    }
+
+    public getErrorContent(): any {
+        return this._errContent;
+    }
+
+    public getResponseContent(): any {
+        return this._respContent;
     }
 
     /**
@@ -82,10 +102,6 @@ export default abstract class HttpAdapter implements IHttpAdapter {
     }
 
     public abstract abort(): void;
-
-    public abstract getErrorContent(): any;
-
-    public abstract getResponseContent(): any;
 
     /**
      * 通过url连接服务器

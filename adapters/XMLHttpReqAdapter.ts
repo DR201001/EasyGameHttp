@@ -4,8 +4,6 @@ let XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
 export default class XMLHttpReqAdapter extends HttpAdapter {
     private _http: XMLHttpRequest = undefined;
 
-    private _errorContent: any = undefined;
-
     constructor() {
         super();
 
@@ -15,14 +13,6 @@ export default class XMLHttpReqAdapter extends HttpAdapter {
 
     public abort(): void {
         this._http?.abort();
-    }
-
-    public getErrorContent(): any {
-        return this._errorContent;
-    }
-
-    public getResponseContent(): any {
-        return this._http.responseText;
     }
 
     protected sendRequest(resolve: (value: unknown) => any, reject: (reason?: any) => any): void {
@@ -42,7 +32,7 @@ export default class XMLHttpReqAdapter extends HttpAdapter {
 
     private _setErrorListener(reject: (reason?: any) => any): void {
         this._http.onerror = (error) => {
-            this._errorContent = error;
+            this.setErrorContent(error);
             this.getAdapterListener()?.onError(this, reject);
         }
     }
@@ -60,7 +50,8 @@ export default class XMLHttpReqAdapter extends HttpAdapter {
         if (xhr.status !== 4) {
             return;
         }
-
+        
+        this.setResponseContent(this._http.responseText);
         this._responseListener(resolve, reject);
     }
 
