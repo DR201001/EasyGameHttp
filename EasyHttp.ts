@@ -21,24 +21,32 @@ export default abstract class EasyHttp implements IHttpMethods, IHttpAdapterList
 
     public constructor() {
         this._queue = new InterceptorQueue<NetInterceptor>();
-        this.initFactory(new XMLHttpReqAdapterFactory(), new HttpRequestFactory());
+
+        this.initAdapterFactory();
+        this.initRequestFactory();
     }
 
     /**
-     * 初始化工厂
-     * @param adapterFactory 适配器工厂
-     * @param requestFactory 请求工厂
+     * 初始化适配器工厂
+     * @param factory 适配器工厂
      */
-    public initFactory(adapterFactory: IHttpAdapterFactory, requestFactory: IHttpRequestFactory): void {
-        this._adapterFactory = adapterFactory;
-        this._requestFactory = requestFactory;
+    protected initAdapterFactory(factory: IHttpAdapterFactory = new XMLHttpReqAdapterFactory()): void {
+        this._adapterFactory = factory;
+    }
+    
+    /**
+     * 初始化 request 工厂
+     * @param factory request工厂
+     */
+     protected initRequestFactory(factory: IHttpRequestFactory = new HttpRequestFactory()): void {
+        this._requestFactory = factory;
     }
 
     /**
      * 增加拦截器
      * @param interceptor 
      */
-    public addInterceptor(interceptor: NetInterceptor): void {
+    protected addInterceptor(interceptor: NetInterceptor): void {
         this._queue?.enqueue(interceptor);
     }
 
@@ -46,7 +54,7 @@ export default abstract class EasyHttp implements IHttpMethods, IHttpAdapterList
      * 设置拦截器
      * @param queue 
      */
-    public setInterceptorQueue(queue: InterceptorQueue<NetInterceptor>): void {
+    protected setInterceptorQueue(queue: InterceptorQueue<NetInterceptor>): void {
         this._queue = queue;
     }
 
@@ -54,22 +62,22 @@ export default abstract class EasyHttp implements IHttpMethods, IHttpAdapterList
         return this._requestFactory?.build(url, body, type);
     }
 
-    public async get(url: string, body: any): Promise<any> {
+    public async get(url: string, body?: any): Promise<any> {
         const _request: HttpRequest = this._createRequest(url, body, RequestType.GET);
         return await this._send(_request);
     }
 
-    public async post(url: string, body: any): Promise<any> {
+    public async post(url: string, body?: any): Promise<any> {
         const _request: HttpRequest = this._createRequest(url, body, RequestType.POST);
         return await this._send(_request);
     }
 
-    public async put(url: string, body: any): Promise<any> {
+    public async put(url: string, body?: any): Promise<any> {
         const _request: HttpRequest = this._createRequest(url, body, RequestType.PUT);
         return await this._send(_request);
     }
 
-    public async delete(url: string, body: any): Promise<any> {
+    public async delete(url: string, body?: any): Promise<any> {
         const _request: HttpRequest = this._createRequest(url, body, RequestType.DELETE);
         return await this._send(_request);
     }
