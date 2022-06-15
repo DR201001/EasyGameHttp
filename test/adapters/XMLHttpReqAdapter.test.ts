@@ -1,12 +1,27 @@
-import XMLHttpReqAdapter from "../../../http/adapters/XMLHttpReqAdapter";
+import XMLHttpReqAdapter from "../../adapters/XMLHttpReqAdapter";
+import HttpRequest from "../../request/HttpRequest";
 
-// let adapter = new XMLHttpReqAdapter();
+let adapter = new XMLHttpReqAdapter();
+let req_1 = new HttpRequest();
 
 test('XMLHttpReqAdapter init test', () => {
-    // expect(adapter).not.toBe(undefined);
-    // expect(adapter._http).not.toBe(undefined);
-    // expect(adapter._timeoutListener).toBe(undefined);
-    // expect(adapter._url).toBe(undefined);
+    expect(adapter).not.toBe(undefined);
+});
+
+test('XMLHttpReqAdapter setRequest test', () => {
+    expect(adapter.getRequest()).toBe(undefined);
+    adapter.setRequest(null);
+    expect(adapter.getRequest()).toBe(undefined);
+    adapter.setRequest("Just Test");
+    expect(adapter.getRequest()).toBe(undefined);
+    adapter.setRequest(adapter);
+    expect(adapter.getRequest()).toBe(undefined);
+    adapter.setRequest(req_1);
+    expect(adapter.getRequest()).toBe(req_1);
+});
+
+test('XMLHttpReqAdapter setRequest test', () => {
+    
 });
 
 // test('XMLHttpReqAdapter setTimeout test', () => {

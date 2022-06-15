@@ -3,31 +3,31 @@ import IHttpAdapter from "../interface/IHttpAdapter";
 import IHttpAdapterListener from "../interface/IHttpAdapterListener";
 
 export default abstract class HttpAdapter implements IHttpAdapter {
-    private _isConnected: boolean = false;
-
     private _request: HttpRequest = undefined;
 
     private _listener: IHttpAdapterListener = undefined;
 
     private _errContent: any = undefined;
 
-    private _respContent: any = undefined;
+    private _respContent: string = undefined;
 
     public setRequest(request: HttpRequest): void {
-        if (this._isConnected) {
-            console.warn("Adapter setRequest failed, http was already connected.");
-            return;
-        }
-
-        this._request = request;
+        if (this._isRequestValid(request))
+            this._request = request;
+        else
+            console.warn(`HttpAdapter setRequest failed, the invalid request is:`, JSON.stringify(request));
     }
 
-    private _setRequestHeaders(headers: Map<string, string>): void {
-        for (const entry of headers.entries()) {
-            this.setRequestHeader(entry[0], entry[1]);
+    private _isRequestValid(request: HttpRequest): boolean {
+        return !!request && typeof request === "object" && typeof(request.getUrl) === "function";
+    }
 
-			console.debug("XMLHttpReqAdapter set request header:",entry[0], entry[1]);
-        }
+    /**
+     * 获取请求
+     * @returns HttpRequest
+     */
+    protected getRequest(): HttpRequest {
+        return this._request;
     }
 
     public connect(): void {
@@ -36,10 +36,16 @@ export default abstract class HttpAdapter implements IHttpAdapter {
         try {
             this.connectServer(url);
             this._setRequestHeaders(this._request?.getRequestHeaders());
-            this._isConnected = true;
         } catch (error) {
-            this._isConnected = false;
             throw new Error("HttpAdapter connect failed, exception is " + error);
+        }
+    }
+
+    private _setRequestHeaders(headers: Map<string, string>): void {
+        for (const entry of headers.entries()) {
+            this.setRequestHeader(entry[0], entry[1]);
+
+			console.debug("XMLHttpReqAdapter set request header:",entry[0], entry[1]);
         }
     }
 
@@ -53,7 +59,7 @@ export default abstract class HttpAdapter implements IHttpAdapter {
         this._errContent = content;
     }
 
-    public setResponseContent(content: any): void {
+    public setResponseContent(content: string): void {
         this._respContent = content;
     }
 
@@ -61,7 +67,7 @@ export default abstract class HttpAdapter implements IHttpAdapter {
         return this._errContent;
     }
 
-    public getResponseContent(): any {
+    public getResponseContent(): string {
         return this._respContent;
     }
 
@@ -75,14 +81,6 @@ export default abstract class HttpAdapter implements IHttpAdapter {
 
     protected getAdapterListener(): IHttpAdapterListener {
         return this._listener;
-    }
-
-    /**
-     * 获取请求
-     * @returns HttpRequest
-     */
-     protected getRequest(): HttpRequest {
-        return this._request;
     }
 
     /**

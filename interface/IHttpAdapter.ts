@@ -40,10 +40,10 @@ export default interface IHttpAdapter {
      * 设置响应内容
      * @param content 
      */
-    setResponseContent(content: any): void;
+    setResponseContent(content: string): void;
 
     /**
      * 获取响应内容
      */
-    getResponseContent(): any;
+    getResponseContent(): string;
 }

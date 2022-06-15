@@ -47,9 +47,9 @@ export default class HttpRequest {
         if (typeof(url) !== "string")
             throw new StringFormatException(`HttpRequest setUrl url is ${url}, type is ${typeof(url)}.`);
 
-        const reg=/^([hH][tT]{2}[pP]:\/\/|[hH][tT]{2}[pP][sS]:\/\/)(([A-Za-z0-9-~]+)\.)+([A-Za-z0-9-~\/])+$/;
-        if (!reg.test(url))
-            throw new UrlFormatException(`HttpRequest setUrl url is ${url}.`);
+        // const reg=/^([hH][tT]{2}[pP]:\/\/|[hH][tT]{2}[pP][sS]:\/\/)(([A-Za-z0-9-~]+)\.)+([A-Za-z0-9-~\/])+$/;
+        // if (!reg.test(url))
+        //     throw new UrlFormatException(`HttpRequest setUrl url is ${url}.`);
 
         this._url = url;
     }
