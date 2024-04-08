@@ -1,5 +1,4 @@
 import HttpAdapter from "./HttpAdapter";
-let XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
 
 export default class XMLHttpReqAdapter extends HttpAdapter {
     private _http: XMLHttpRequest = undefined;
