@@ -1,6 +1,6 @@
 import IHttpAdapter from "../interface/IHttpAdapter";
 import HttpRequest from "../request/HttpRequest";
-import NetInterceptor from "./NetInterceptor";
+import NetInterceptor from "../interceptors/NetInterceptor";
 
 /**
  * log拦截器

@@ -1,5 +1,5 @@
 import EasyHttp from "../EasyHttp";
-import LogInterceptor from "../interceptors/LogInterceptor";
+import LogInterceptor from "./LogInterceptor";
 import IHttpAdapter from "../interface/IHttpAdapter";
 
 export default class ExampleHttp extends EasyHttp {
@@ -16,3 +16,5 @@ export default class ExampleHttp extends EasyHttp {
 
     protected response(content: any): void { }
 }
+
+// new ExampleHttp().post("http://qqazx-z.mmmrz.com/config");
