@@ -15,16 +15,11 @@ export default class HttpRequestFactory implements IHttpRequestFactory {
     private _createRequest(): HttpRequest {
         const _request: HttpRequest = new HttpRequest();
         this.initRequestTimeout(_request);
-        this.initRequestHeader(_request);
 
         return _request;
     }
 
     protected initRequestTimeout(request: HttpRequest): void {
         request?.setTimeout(3000);
-    }
-
-    protected initRequestHeader(request: HttpRequest): void {
-        request?.setRequestHeader("Content-Type", "application/json;charset=utf-8");
     }
 }

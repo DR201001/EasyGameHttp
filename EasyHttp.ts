@@ -1,6 +1,7 @@
 import { RequestType } from "./config/HttpRequest";
 import HttpRequestFactory from "./factory/HttpRequestFactory";
 import XMLHttpReqAdapterFactory from "./factory/XMLHttpReqAdapterFactory";
+import HeaderInterceptor from "./interceptors/HeaderInterceptor";
 import InterceptorQueue from "./interceptors/InterceptorQueue";
 import NetInterceptor from "./interceptors/NetInterceptor";
 import IHttpAdapter from "./interface/IHttpAdapter";
@@ -21,6 +22,8 @@ export default abstract class EasyHttp implements IHttpMethods, IHttpAdapterList
 
     public constructor() {
         this._queue = new InterceptorQueue<NetInterceptor>();
+        // 消息头部拦截器
+        this.addInterceptor(new HeaderInterceptor());
 
         this.initAdapterFactory();
         this.initRequestFactory();
@@ -85,21 +88,21 @@ export default abstract class EasyHttp implements IHttpMethods, IHttpAdapterList
     private async _send(request: HttpRequest): Promise<void> {
         const _adapter: IHttpAdapter = this._adapterFactory.build(this);
         
-        this._queue?.onRequest(request);
+        this._queue?.netRequest(request);
         _adapter.setRequest(request);
         _adapter.connect();
         return await _adapter.send();
     }
 
     public onError(adapter: IHttpAdapter, reject: (reason?: any) => any): void {
-        this._queue?.onError(adapter, reject);
+        this._queue?.netError(adapter, reject);
         this.error(adapter.getErrorContent(), reject);
 
         reject("");
     }
 
     public onResponse(adapter: IHttpAdapter, resolve: (unknown: any) => any, reject: (reason?: any) => any): void {
-        this._queue?.onResponse(adapter, reject);
+        this._queue?.netResponse(adapter, reject);
         this.response(adapter.getResponseContent());
 
         resolve(adapter.getResponseContent());

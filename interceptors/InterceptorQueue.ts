@@ -29,15 +29,15 @@ export default class InterceptorQueue<T extends NetInterceptor> implements INetI
         return this._array.length;
     }
 
-    public onRequest(request: HttpRequest): void {
-        this.front()?.onRequest(request);
+    public netRequest(request: HttpRequest): void {
+        this.front()?.netRequest(request);
     }
 
-    public onResponse(adapter: IHttpAdapter, reject: (reason?: any) => void): void {
-        this.front()?.onResponse(adapter, reject);
+    public netResponse(adapter: IHttpAdapter, reject: (reason?: any) => void): void {
+        this.front()?.netResponse(adapter, reject);
     }
 
-    public onError(adapter: IHttpAdapter, reject: (reason?: any) => void): void {
-        this.front()?.onError(adapter, reject);
+    public netError(adapter: IHttpAdapter, reject: (reason?: any) => void): void {
+        this.front()?.netError(adapter, reject);
     }
 }

@@ -42,11 +42,11 @@ export default abstract class HttpAdapter implements IHttpAdapter {
     }
 
     private _setRequestHeaders(headers: Map<string, string>): void {
-        for (const entry of headers.entries()) {
-            this.setRequestHeader(entry[0], entry[1]);
+        headers.forEach((value, key) => { 
+            this.setRequestHeader(key, value);
 
-			console.debug("XMLHttpReqAdapter set request header:",entry[0], entry[1]);
-        }
+            console.debug("XMLHttpReqAdapter set request header:", key, value);
+        })
     }
 
     public async send(): Promise<any> {

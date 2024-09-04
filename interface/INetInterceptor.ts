@@ -9,19 +9,19 @@ export default interface INetInterceptor {
      * 请求拦截接口
      * @param request 
      */
-    onRequest(request: HttpRequest): void;
+    netRequest(request: HttpRequest): void;
 
     /**
      * 响应拦截器
      * @param adapter 
      * @param reject 
      */
-    onResponse(adapter: IHttpAdapter, reject: (reason?: any) => void): void;
+    netResponse(adapter: IHttpAdapter, reject: (reason?: any) => void): void;
 
     /**
      * 异常拦截器
      * @param adapter 
      * @param reject 
      */
-    onError(adapter: IHttpAdapter, reject: (reason?: any) => void): void;
+    netError(adapter: IHttpAdapter, reject: (reason?: any) => void): void;
 }

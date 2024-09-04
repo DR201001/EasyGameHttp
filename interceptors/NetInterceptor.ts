@@ -22,7 +22,7 @@ export default abstract class NetInterceptor implements INetInterceptor {
 
     protected nextRequest(request: HttpRequest): void {
         if (this._hasNext()) {
-            this.getNext().onRequest(request);
+            this.getNext().netRequest(request);
         }
         else {
             console.log("INetInterceptor onRequest finished.");
@@ -31,7 +31,7 @@ export default abstract class NetInterceptor implements INetInterceptor {
 
     protected nextResponse(adapter: IHttpAdapter, reject: (reason?: any) => void): void {
         if (this._hasNext()) {
-            this.getNext().onResponse(adapter, reject);
+            this.getNext().netResponse(adapter, reject);
         }
         else {
             console.log("INetInterceptor onResponse finished.");
@@ -40,7 +40,7 @@ export default abstract class NetInterceptor implements INetInterceptor {
 
     protected nextError(adapter: IHttpAdapter, reject: (reason?: any) => void): void {
         if (this._hasNext()) {
-            this.getNext().onError(adapter, reject);
+            this.getNext().netError(adapter, reject);
         }
         else {
             console.log("INetInterceptor onError finished.");
@@ -48,9 +48,27 @@ export default abstract class NetInterceptor implements INetInterceptor {
         }
     }
 
-    public abstract onRequest(request: HttpRequest): void;
+    public netRequest(request: HttpRequest): void {
+        this.onNetRequest(request);
 
-    public abstract onResponse(adapter: IHttpAdapter, reject: (reason?: any) => void): void;
+        this.nextRequest(request);
+    }
 
-    public abstract onError(adapter: IHttpAdapter, reject: (reason?: any) => void): void;
+    public netResponse(adapter: IHttpAdapter, reject: (reason?: any) => void): void {
+        this.onNetResponse(adapter, reject);
+
+        this.nextResponse(adapter, reject);
+    }
+
+    public netError(adapter: IHttpAdapter, reject: (reason?: any) => void): void {
+        this.onNetError(adapter, reject);
+
+        this.nextError(adapter, reject);
+    }
+
+    protected abstract onNetRequest(request: HttpRequest): void;
+
+    protected abstract onNetResponse(adapter: IHttpAdapter, reject: (reason?: any) => void): void;
+
+    protected abstract onNetError(adapter: IHttpAdapter, reject: (reason?: any) => void): void;
 }
